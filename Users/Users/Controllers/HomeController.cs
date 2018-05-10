@@ -11,7 +11,9 @@ namespace Users.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            Dictionary<String, object> data = new Dictionary<string, object>();
+            data.Add("Placeholder", "Placeholder");
+            return View(data);
         }
     }
 }
