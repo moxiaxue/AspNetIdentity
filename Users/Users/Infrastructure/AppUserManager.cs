@@ -21,21 +21,23 @@ namespace Users.Infrastructure
         {
             AppIdentityDbContext db = context.Get<AppIdentityDbContext>();
             AppUserManager manager = new AppUserManager(new UserStore<AppUser>(db));
-
-            manager.PasswordValidator = new CustomPasswordValidator
-            {
-                RequiredLength=6,
-                RequireNonLetterOrDigit=false,
-                RequireDigit=false,
-                RequireLowercase=true,
-                RequireUppercase=true
-            };
-
-            manager.UserValidator = new UserValidator<AppUser>(manager)
+            
+            //the password validator will be applied first
+            manager.UserValidator = new CustomUserValidator(manager)
             {
                 AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
             };
+
+            manager.PasswordValidator = new CustomPasswordValidator
+            {
+                RequiredLength = 6,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = true,
+                RequireUppercase = true
+            };
+
             return manager;
         }
     }
