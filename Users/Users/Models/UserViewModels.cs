@@ -20,4 +20,15 @@ namespace Users.Models
         public string Password { get; set; }
     }
 
+
+    public class LoginModel
+    {
+        [Required]
+        public String Name { get; set; }
+
+        [Required]
+        public String Password { get; set; }
+
+    }
+
 }
