@@ -26,7 +26,7 @@
                     <td>
                         @using (Html.BeginForm("Delete", "Admin", new { id = user.Id }))
                             { 
-                            @Html.ActionLink("Edit", "Admin", new { id=user.Id}, new { @class = "btn btn-danger btn-xs" })
+                            @Html.ActionLink("Edit", "Edit", new { id=user.Id}, new { @class = "btn btn-danger btn-xs" })
                             <button class="btn btn-danger btn-xs" type="submit">Delete</button>
                             }
                     </td>
