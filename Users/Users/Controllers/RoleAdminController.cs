@@ -12,7 +12,7 @@ using Users.Models;
 
 namespace Users.Controllers
 {
-    public class RoleAdminController : Controller
+    public class RoleAdminController :Controller
     {
         // GET: RoleAdmin
         public ActionResult Index()
