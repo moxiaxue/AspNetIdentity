@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -35,7 +36,26 @@ namespace Users.Infrastructure
 
         public void PerformInitialSetup(AppIdentityDbContext context)
         {
+            AppUserManager userMrg = new AppUserManager(new UserStore<AppUser>(context));
+            AppRoleManager roleMrg = new AppRoleManager(new RoleStore<AppRole>(context));
 
+            String roleName = "SuperAdministors";
+            String userName = "SuperAdmin";
+            String password = "SuperAmin12";
+            String email = "SuperAdmin@exmaple.com";
+
+            if (!roleMrg.RoleExists(roleName))
+                roleMrg.Create(new AppRole(roleName));
+
+            AppUser user = userMrg.FindByName(userName);
+            if(user==null)
+            {
+                userMrg.Create(new AppUser { UserName = userName, Email = email }, password);
+                user = userMrg.FindByName(userName);
+            }
+
+            if (!userMrg.IsInRole(user.Id, roleName))
+                userMrg.AddToRole(user.Id, roleName);
         }
     }
 }

@@ -13,6 +13,7 @@ using Users.Models;
 namespace Users.Controllers
 {
   
+    [Authorize(Roles = "SuperAdministors")]
     public class AdminController : Controller
     {
         // GET: Admin
