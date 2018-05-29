@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using Users.Infrastructure;
 
 namespace Users.Controllers
 {
@@ -20,7 +21,8 @@ namespace Users.Controllers
                 return View(ident.Claims);
         }
 
-        [Authorize(Roles ="DCGeneralUser")]
+        //[Authorize(Roles ="DCGeneralUser")]
+        [ClaimsAccess(Issuer ="RemoteClaims",ClaimType =ClaimTypes.PostalCode,Value ="DC 20500")]
         public String OtherAction()
         {
             return "This is the protected action";
