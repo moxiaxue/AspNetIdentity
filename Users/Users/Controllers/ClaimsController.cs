@@ -19,5 +19,11 @@ namespace Users.Controllers
             else
                 return View(ident.Claims);
         }
+
+        [Authorize(Roles ="DCGeneralUser")]
+        public String OtherAction()
+        {
+            return "This is the protected action";
+        }
     }
 }

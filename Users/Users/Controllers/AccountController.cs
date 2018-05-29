@@ -41,6 +41,7 @@ namespace Users.Controllers
                 {
                     ClaimsIdentity claimsIdentity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     claimsIdentity.AddClaims(LocationClaimsProvider.GetClaims(claimsIdentity));
+                    claimsIdentity.AddClaims(ClaimsRoles.CreateRolesFromClaims(claimsIdentity));
                     //remove the Cookie Authenticated and apply the new one
                     AuthManager.SignOut();
                     AuthManager.SignIn(new AuthenticationProperties { IsPersistent=false},claimsIdentity);
