@@ -56,7 +56,8 @@ namespace Users.Migrations
 
             foreach (AppUser dbUser in userMrg.Users)
             {
-                dbUser.City = Cities.PARIS;
+                if (dbUser.Country == Countries.NONE)
+                    dbUser.SetCountryFromCity(dbUser.City);
             }
             context.SaveChanges();
         }
