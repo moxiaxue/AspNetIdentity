@@ -190,6 +190,7 @@
     <Compile Include="Infrastructure\CustomPasswordValidator.cs" />
     <Compile Include="Infrastructure\CustomUserValidator.cs" />
     <Compile Include="Infrastructure\IdentityHelpers.cs" />
+    <Compile Include="Infrastructure\LocationClaimsProvider.cs" />
     <Compile Include="Migrations\201805290655563_CityProperty.cs" />
     <Compile Include="Migrations\201805290655563_CityProperty.Designer.cs">
       <DependentUpon>201805290655563_CityProperty.cs</DependentUpon>
