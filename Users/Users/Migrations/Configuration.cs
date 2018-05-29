@@ -1,9 +1,13 @@
 namespace Users.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Users.Infrastructure;
+    using Users.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Users.Infrastructure.AppIdentityDbContext>
     {
@@ -27,6 +31,35 @@ namespace Users.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+
+            AppUserManager userMrg = new AppUserManager(new UserStore<AppUser>(context));
+            AppRoleManager roleMrg = new AppRoleManager(new RoleStore<AppRole>(context));
+
+            String roleName = "SuperAdministors";
+            String userName = "SuperAdmin";
+            String password = "SuperAmin12";
+            String email = "SuperAdmin@exmaple.com";
+
+            if (!roleMrg.RoleExists(roleName))
+                roleMrg.Create(new AppRole(roleName));
+
+            AppUser user = userMrg.FindByName(userName);
+            if (user == null)
+            {
+                userMrg.Create(new AppUser { UserName = userName, Email = email }, password);
+                user = userMrg.FindByName(userName);
+            }
+
+            if (!userMrg.IsInRole(user.Id, roleName))
+                userMrg.AddToRole(user.Id, roleName);
+
+            foreach (AppUser dbUser in userMrg.Users)
+            {
+                dbUser.City = Cities.PARIS;
+            }
+            context.SaveChanges();
         }
+
     }
 }
