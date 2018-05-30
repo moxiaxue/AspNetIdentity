@@ -17,10 +17,17 @@ namespace Users//.App_Start
             app.CreatePerOwinContext<AppIdentityDbContext>(AppIdentityDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
             });
+
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseMicrosoftAccountAuthentication(
+                clientId: "16e5088b-985a-464a-813a-084d08935ca9",
+                clientSecret: "mweL64orldOLLLZA888*;(-"
+                );
         }
     }
 }

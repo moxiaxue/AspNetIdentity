@@ -52,6 +52,53 @@ namespace Users.Controllers
             return View(details);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult MicrosoftLogin(String returnUrl)
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("MicrosoftCallback", new { returnUrl = returnUrl })
+            };
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Microsoft");
+            return new HttpUnauthorizedResult();
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> MicrosoftCallback(String returnUrl)
+        {
+            ExternalLoginInfo loginInfo = await AuthManager.GetExternalLoginInfoAsync();
+            AppUser user = await UserManager.FindAsync(loginInfo.Login);
+            if(user==null)
+            {
+                user = new AppUser
+                {
+                    Email = loginInfo.Email,
+                    UserName = loginInfo.DefaultUserName,
+                    City = Cities.LONDON,
+                    Country = Countries.UK
+                };
+                IdentityResult result = await UserManager.CreateAsync(user);
+                if(!result.Succeeded)
+                {
+                    return View("Error", result.Errors);
+                }
+                else
+                {
+                    result = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                    if(!result.Succeeded)
+                    {
+                        return View("Error", result.Errors);
+                    }
+                }
+            }
+            ClaimsIdentity claimsIdentity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            claimsIdentity.AddClaims(loginInfo.ExternalIdentity.Claims);
+
+            AuthManager.SignIn(new AuthenticationProperties{IsPersistent = false}, claimsIdentity);
+            return Redirect(returnUrl ?? "/");
+        }
+
         [Authorize]
         public ActionResult Logout()
         {

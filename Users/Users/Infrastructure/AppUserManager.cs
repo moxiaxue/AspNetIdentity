@@ -23,11 +23,11 @@ namespace Users.Infrastructure
             AppUserManager manager = new AppUserManager(new UserStore<AppUser>(db));
             
             //the password validator will be applied first
-            manager.UserValidator = new CustomUserValidator(manager)
-            {
-                AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = true
-            };
+            //manager.UserValidator = new CustomUserValidator(manager)
+            //{
+            //    AllowOnlyAlphanumericUserNames = true,
+            //    RequireUniqueEmail = true
+            //};
 
             manager.PasswordValidator = new CustomPasswordValidator
             {
